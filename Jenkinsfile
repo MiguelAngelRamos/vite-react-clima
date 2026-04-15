@@ -22,7 +22,7 @@ pipeline {
                 docker {
                     image 'node:24-alpine'
                     args '-u root:root --entrypoint=""'
-                    label 'slave'
+                    label 'slave-weather'
                     reuseNode false
                 }
             }
@@ -43,7 +43,7 @@ pipeline {
                 docker {
                     image 'node:24-alpine'
                     args '-u root:root --entrypoint=""'
-                    label 'slave'
+                    label 'slave-weather'
                     reuseNode false
                 }
             }
@@ -59,7 +59,7 @@ pipeline {
         }
 
         stage('Build imagen Docker') {
-            agent { label 'slave' }
+            agent { label 'slave-weather' }
             steps {
                 echo "Construyendo imagen ${IMAGE_NAME}:${env.BRANCH_NAME}..."
                 sh "docker build -t ${IMAGE_NAME}:${env.BRANCH_NAME} ."
@@ -68,7 +68,7 @@ pipeline {
         }
 
         stage('Deploy') {
-            agent { label 'slave' }
+            agent { label 'slave-weather' }
             when { branch 'main' }
             steps {
                 echo 'Deteniendo contenedor anterior si existe...'
